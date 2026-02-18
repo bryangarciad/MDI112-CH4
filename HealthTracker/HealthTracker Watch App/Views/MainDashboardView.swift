@@ -14,7 +14,7 @@ struct MainDashboardView: View {
                     // Calories Ring
                     VStack(spacing: 6) {
                         ProgressRingView(
-                            progress: 0.2,
+                            progress: 0.6,
                             icon: "flame.fill",
                             color: .orange,
                             size: 60
@@ -38,8 +38,19 @@ struct MainDashboardView: View {
                     }
                 }
                 
-                //NavigationLink()
+                NavigationLink(destination: GoalSettingsView(viewModel: viewModel)) {
+                    HStack {
+                        Image(systemName: "gearshape.fill")
+                            .font(.system(size: 12))
+                        Text("Goals")
+                            .font(.system(size: 12))
+                    }
+                    .foregroundColor(.gray)
+                }
+                .buttonStyle(PlainButtonStyle())
+                .padding(.top, 4)
             }
+            .padding(.vertical, 8)
         }
     }
 }

@@ -14,10 +14,17 @@ class HealthViewModel: ObservableObject {
     
     init() {
         self.goals = storage.loadGoals()
+        refreshTodaysDate()
     }
     
     func updateGoals(calories: Double, water: Double) {
         goals = UserGoals(dailyCaloriesGoal: calories, dailyWaterGoal: water)
         storage.saveGoals(goals)
+    }
+    
+    // MARK: - Diary Entries
+    func refreshTodaysDate() {
+        todaysCalories = storage.getTodaysTotal(for: .calories)
+        todaysWaters = storage.getTodaysTotal(for: .water)
     }
 }
