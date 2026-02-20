@@ -22,7 +22,7 @@ class MotivationalQuotesService {
     ]
 
     func fetchQuote() async -> MotivationalQuote {
-        guard let url = URL(string: apiURL) {
+        guard let url = URL(string: apiURL) else {
             return fallbackQuotes.randomElement() ?? fallbackQuotes[0]
         }
 

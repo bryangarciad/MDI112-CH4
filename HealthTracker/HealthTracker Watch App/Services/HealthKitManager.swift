@@ -13,7 +13,7 @@ class HealthKitManager {
 
 
     var isHealthKitIsAvailable: Bool {
-        HKHealthStore.isHealthKitIsAvailable()
+        HKHealthStore.isHealthDataAvailable()
     }
 
     // MARK: - Deal with Authorization
@@ -29,8 +29,8 @@ class HealthKitManager {
     }
 
     // Query
-    func fetchLatestHeartRate() async throws -> HeartRateSample? {
-        return try await withCheckedThrowingContinuation { continuation in 
+    func fetchLatestHeartRate() async throws -> Double? {
+        return try await withCheckedThrowingContinuation { continuation in
             // Order For the Data
             let sortDescriptorForStartDate = NSSortDescriptor(
                 key: HKSampleSortIdentifierStartDate, // start date for the measurement to be taken
@@ -41,14 +41,14 @@ class HealthKitManager {
                 sampleType: heartRateType,
                 predicate: nil,
                 limit: 1,
-                sortDescriptor: [sortDescriptor]
+                sortDescriptors: [sortDescriptorForStartDate]
             ) { query, samples, error in
                 if let error = error {
                     continuation.resume(throwing: error)
                 }
 
                 guard let sample = samples?.first as? HKQuantitySample else {
-                    continuation.resume(returning: nil)
+                    continuation.resume(returning: 0)
                     return
                 }
 
